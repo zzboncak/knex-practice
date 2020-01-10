@@ -1,63 +1,66 @@
 require('dotenv').config();
 const knex = require('knex');
+const ShoppingListService = require('./shopping-list-service');
 
 const knexInstance = knex({
   client: 'pg',
   connection: process.env.DB_URL,
 });
 
-//Get all items that contain text
-function searchAllItems(searchTerm) {
-    knexInstance
-        .select('*')
-        .from('shopping_list')
-        .where('name', 'ILIKE', `%${searchTerm}%`)
-        .then(res => {
-            console.log(res)
-        });
-}
+console.log(ShoppingListService.getAllItems());
 
-//searchAllItems('sal');
+// //Get all items that contain text
+// function searchAllItems(searchTerm) {
+//     knexInstance
+//         .select('*')
+//         .from('shopping_list')
+//         .where('name', 'ILIKE', `%${searchTerm}%`)
+//         .then(res => {
+//             console.log(res)
+//         });
+// }
 
-function itemsByPage(page) {
-    const offset = 6 * (page - 1);
-    knexInstance
-        .select('*')
-        .from('shopping_list')
-        .limit(6)
-        .offset(offset)
-        .then(res => {
-            console.log(res)
-        });
-}
+// //searchAllItems('sal');
 
-//itemsByPage(3);
+// function itemsByPage(page) {
+//     const offset = 6 * (page - 1);
+//     knexInstance
+//         .select('*')
+//         .from('shopping_list')
+//         .limit(6)
+//         .offset(offset)
+//         .then(res => {
+//             console.log(res)
+//         });
+// }
 
-function itemsAfterDate(daysAgo) {
-    knexInstance
-        .select('*')
-        .from('shopping_list')
-        .where(
-            'date_added',
-            '>',
-            knexInstance.raw(`now() - '?? days'::INTERVAL`, daysAgo)
-        )
-        .then(res => {
-            console.log(res)
-        });
-}
+// //itemsByPage(3);
 
-//itemsAfterDate(4);
+// function itemsAfterDate(daysAgo) {
+//     knexInstance
+//         .select('*')
+//         .from('shopping_list')
+//         .where(
+//             'date_added',
+//             '>',
+//             knexInstance.raw(`now() - '?? days'::INTERVAL`, daysAgo)
+//         )
+//         .then(res => {
+//             console.log(res)
+//         });
+// }
 
-function sumAllTheThings() {
-    knexInstance
-        .select('category')
-        .from('shopping_list')
-        .groupBy('category')
-        .sum('price')
-        .then(res => {
-            console.log(res)
-        });
-}
+// //itemsAfterDate(4);
 
-sumAllTheThings();
+// function sumAllTheThings() {
+//     knexInstance
+//         .select('category')
+//         .from('shopping_list')
+//         .groupBy('category')
+//         .sum('price')
+//         .then(res => {
+//             console.log(res)
+//         });
+// }
+
+// sumAllTheThings();
